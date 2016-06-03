@@ -39,4 +39,5 @@ Date:   Fri Jun 3 11:38:33 2016 +0200
 
     First commit with README.txt file
 
-Add updated files that have been updated ca
+Add updated files that have been updated 
+$ git add -u -> only adds files displayed as modified
