@@ -1,0 +1,102 @@
+This document displays and explains features about Git. Most of the content is grapped from 
+James Wyndham's PluralSight course Git Fundamentals
+
+Initialise repo as a git repo
+$ git init 
+
+Git configurations can be done in multiple levels. Git's config is heirarchical.
+$ git config --system -> system wide | Program Files\
+$ git config --global -> for the user | User\<name>\.gitconfig
+$ git config          -> for repo | .gitconfig file inside repo
+
+Git config example
+$ git config --global user.name "Jesper Baltzersen"
+
+Configured settings
+$ git config --global --list
+user.name=Jesper Baltzersen
+user.email=jesperbaltzersen@gmail.com
+user.password=
+help.autocorrect=1 -> this gives fuzzy match capabilities to Git commands i.e. staus = status
+core.editor=vim
+core.autocrlf=true -> converts line endings for windows to linux if true, nothing if false. True is safe and easy
+color.ui=auto
+
+To get a repo from github
+$ git clone http//<repo name ending in .git>
+
+To add files 
+$ git add <file> -> <.> adds all files
+$ git add . -> adds everything
+$ git add -A -> adds everything
+
+Commit
+$ git commit -> opens specified core.editor for commit message
+$ git commit -m "you can type commit messages in line" ->  
+
+Stage changes as multiple commits i.e. if you have changed multiple files, but changes are not related
+$ git add <first modified file>
+$ git commit -m "this is the first commit"
+$ git add <second modified file>
+$ git commit -m "this is the second commit"
+
+Information about commits
+$ git log
+$ git log --oneline
+$ git log --oneline | wc -l -> word count, but by line because -l is used
+$ git log --oneline --graph
+$ git shortlog
+
+Add updated files that have been updated 
+$ git add -u -> only adds files displayed as modified, also stages deleted files for deletion 
+
+To find out what has changed between commits
+$ git diff <SHA for first commit>..<SHA for second commit> -> SHA's are optained from $ git log
+$ git diff HEAD~1..HEAD -> diffs HEAD and one before HEAD
+$ git diff HEAD~1.. -> git assumes HEAD for second param if not specified
+
+Undo changes made to a file by resetting to HEAD version for that file
+$ git checkout <file name>
+
+Undo all changes made to files. Resets to HEAD
+$ git reset --hard
+
+Undo commits to previous commits but keep changes in staging area. Good for making changes to the commit.
+$ git reset --soft HEAD~1 -> resets to just before last commit. Contains changes made in staging area
+
+View last commit
+$ git show HEAD
+
+Remove unwanted items from staging
+$ git clean -n -> shows what will happen
+$ git clean -f -> performs the clean
+
+View branches
+$ git branch
+$ git branch -r -> shows remote brances
+
+View remote branch
+$ git remote -v
+
+Set remote tracking branch
+$ git branch --set-upstream <local repo> <remote repo>
+$ git branch --set-upstream master origin/master
+
+
+Add remote - you can add multiple remotes for pulling forks of projects from others repo's
+$ git remote add origin http://<.git> // http version of repo needs auth
+$ git remote add origin git@github.com:/JesperBa... // ssh version uses local private key for auth
+
+Fetch changes from remote branch to - needs git merge to, which creates a fast-forward (same as git pull)
+$ git fetch
+$ git fetch <remote name> // in case of multiple remotes
+
+Pull does both fetch and fast-forward
+$ git pull
+$ git pull 
+
+Tags points to commits
+$ git tag v1.0
+$ git tag -a v1.0_with_message
+$ git tag -s v1.0_signed
+
