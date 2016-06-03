@@ -100,3 +100,24 @@ $ git tag v1.0
 $ git tag -a v1.0_with_message
 $ git tag -s v1.0_signed
 
+Push Tags to remote - they do not push automatically
+$ git push --tags
+
+Verify tag
+$ git tag -v <tagName>
+
+Verify commit
+$ git verify-commit <commitSHA>
+
+Using ssh key
+
+Using gpg key"
+$ gpg --gen-key
+$ gpg --list-keys
+/c/Users/JesperBaltzersen/.gnupg/pubring.gpg
+--------------------------------------------
+pub   xxxxx/<keyId> 2016-06-03 [expires: 2021-06-02]
+uid                  Jesper Baltzersen (jesperbaltzersen.dk) <jesperbaltzersen@gmail.com>
+sub   xxxxx/xxxxxxxx 2016-06-03 [expires: 2021-06-02]
+$ git config --global user.signingkey "<keyId>" //tells git which key to use
+$ gpg --armor --export "<keyId>" //returns they key - copy and paste it from -----BEGIN to KEY BLOCK-----
