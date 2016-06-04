@@ -10,17 +10,19 @@ $ git config --global -> for the user | User\<name>\.gitconfig
 $ git config          -> for repo | .gitconfig file inside repo
 
 Git config example
-$ git config --global user.name "Jesper Baltzersen"
+$ git config --global user.name "Jesper Baltzersen" // sets user.name
+$ git config --global alias.lga "log --graph --oneline --all --decorate" // creating aliases for git commands use $ git lga
+
 
 Configured settings
 $ git config --global --list
-user.name=Jesper Baltzersen
-user.email=jesperbaltzersen@gmail.com
-user.password=
-help.autocorrect=1 -> this gives fuzzy match capabilities to Git commands i.e. staus = status
-core.editor=vim
-core.autocrlf=true -> converts line endings for windows to linux if true, nothing if false. True is safe and easy
-color.ui=auto
+	user.name=Jesper Baltzersen
+	user.email=jesperbaltzersen@gmail.com
+	user.password=
+	help.autocorrect=1 -> this gives fuzzy match capabilities to Git commands i.e. staus = status
+	core.editor=vim
+	core.autocrlf=true -> converts line endings for windows to linux if true, nothing if false. True is safe and easy
+	color.ui=auto
 
 To get a repo from github
 $ git clone http//<repo name ending in .git>
@@ -110,14 +112,47 @@ Verify commit
 $ git verify-commit <commitSHA>
 
 Using ssh key
+1. generate key
+2. check for existing ssh agent
+3. add key to ssh-agent
+4. copy key to clip board
+5. paste in to github -> under settings for account (top right corner)
+$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+$ eval "$(ssh-agent -s)" // Agent pid 132213
+$ ssh-add ~/.ssh/id_rsa
+$ clip < ~/.ssh/id_rsa.pub
 
-Using gpg key"
+Using gpg key gnu privacy guard. The keys are stored in c/Users/JesperBaltzersen/.gnupg/secring.gpg
+Should upgrade to newer version 2.1 ~modern 
+1. genereate key
+2. list keys // use <keyId> for following operations
+3. print keys in ascii format for pasting to github -> under settings for account (top right corner)
 $ gpg --gen-key
 $ gpg --list-keys
-/c/Users/JesperBaltzersen/.gnupg/pubring.gpg
---------------------------------------------
-pub   xxxxx/<keyId> 2016-06-03 [expires: 2021-06-02]
-uid                  Jesper Baltzersen (jesperbaltzersen.dk) <jesperbaltzersen@gmail.com>
-sub   xxxxx/xxxxxxxx 2016-06-03 [expires: 2021-06-02]
-$ git config --global user.signingkey "<keyId>" //tells git which key to use
-$ gpg --armor --export "<keyId>" //returns they key - copy and paste it from -----BEGIN to KEY BLOCK-----
+	/c/Users/JesperBaltzersen/.gnupg/pubring.gpg
+	--------------------------------------------
+	pub   xxxxx/<keyId> 2016-06-03 [expires: 2021-06-02]
+	uid                  Jesper Baltzersen (jesperbaltzersen.dk) <jesperbaltzersen@gmail.com>
+	sub   xxxxx/xxxxxxxx 2016-06-03 [expires: 2021-06-02]
+$ git config --global user.signingkey "<keyId>" //tells git which key to use for the signed in user on system
+$ gpg --armor --export "<keyId>" //returns the in ascii - copy and paste it from -----BEGIN to KEY BLOCK-----
+
+
+Working with git
+
+$ git log --graph --oneline // list of commits on current branch
+$ git log --graph --onleline --all  // list commits from all branches
+	* cd3c3cf added verification instructions
+	* 73b5dd9 signing shit
+	* d6f73dc adding course log
+	* e8fd8fd some goodies.....narh not really
+
+$ git log --graph --onleline --all -- decorate // list commits from all branches + tag/branch info
+	* cd3c3cf (HEAD -> master, origin/master) added verification instructions
+	* 73b5dd9 (tag: v1.0_signed) signing shit
+	* d6f73dc adding course log
+	* e8fd8fd (tag: v1.0_with_message, tag: v1.0) some goodies.....narh not really
+
+Branching - branches are labels on SHA1 hashes for commits
+$ git branch <newBranchName> // creates new branch
+$ git checkout <newBranchName> // makes <newBranchName> the active branch
