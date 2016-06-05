@@ -89,7 +89,7 @@ Add remote - you can add multiple remotes for pulling forks of projects from oth
 $ git remote add origin http://<.git> // http version of repo needs auth
 $ git remote add origin git@github.com:/JesperBa... // ssh version uses local private key for auth
 
-Fetch changes from remote branch to - needs git merge to, which creates a fast-forward (same as git pull)
+Fetch changes from remote branch to current - needs git merge too, which creates a fast-forward (same as git pull)
 $ git fetch
 $ git fetch <remote name> // in case of multiple remotes
 
@@ -97,7 +97,7 @@ Pull does both fetch and fast-forward
 $ git pull
 $ git pull 
 
-Tags points to commits
+Tags points to commits - syntactic sugar for commit SHA1 hashes - stays on that commit
 $ git tag v1.0
 $ git tag -a v1.0_with_message
 $ git tag -s v1.0_signed
@@ -137,8 +137,12 @@ $ gpg --list-keys
 $ git config --global user.signingkey "<keyId>" //tells git which key to use for the signed in user on system
 $ gpg --armor --export "<keyId>" //returns the in ascii - copy and paste it from -----BEGIN to KEY BLOCK-----
 
+Diff - standard is to show difference by line, even if only a single word was changed
+git diff --cached // compares repo to staging
+git diff --word-diff // show diff by word instead of by line as is default
+git diff --unified=10 // shows 10 lines of each side of change instead of default 3
 
-Working with git
+Working with Git branches 
 
 $ git log --graph --oneline // list of commits on current branch
 $ git log --graph --onleline --all  // list commits from all branches
@@ -153,6 +157,37 @@ $ git log --graph --onleline --all -- decorate // list commits from all branches
 	* d6f73dc adding course log
 	* e8fd8fd (tag: v1.0_with_message, tag: v1.0) some goodies.....narh not really
 
-Branching - branches are labels on SHA1 hashes for commits
+Branching - branches are labels on SHA1 hashes for commits - branches follow commits (tags don't)
 $ git branch <newBranchName> // creates new branch
 $ git checkout <newBranchName> // makes <newBranchName> the active branch
+$ git branch -b <newBranchName> // creates and checkout of branch
+$ git branch -m <exsitingBranchName> <newBranchName> // rename branch by moving it
+$ git branch -d <branchName> // delete branch (can't delete unmerged branches), -D forces deletion 
+
+Create remote branch
+$ git push <remoteName/origin> <local branch name> // creates <branch name> at remote with same branch name as <local branch> 
+$ git push <remoteName/origin> <local branch name>:<remote branch name> // optionally specify other name for remote branch 
+$ git push origin <branchName> // if remote is named origin - can be different if working with multiple remotes
+
+Delete remote branch - push empty
+$ git push origin :<remote branch name>
+
+
+Stashing - temporary holding area - for stuff thats not ready to be commited to a branch
+$ git stash // saves changes made to working copy and rolls back working copy
+$ git stash list // shows changes saved in stash
+$ git stash apply // reapplies changes saved in stash - does not remove stash from list
+$ git stash pop // reapplies changes saved in stash - does remove stash from list
+$ git stash drop // removes top of stash stack
+
+Rebasing - rewinds head to branch-out point and replays rewinded changes on top of rebase branch
+git rebase master // rewinds current branch and replays it on top of master - looks like current branch is just done on top of master
+git rebase --continue // used when rebase causes merge conflicts. Is used after each resolved merge
+
+Retrieving deleted branches
+$ git reflog // list of previous HEAD pointers - this log only kept for 30 days by default
+$ git branch <branchName> <SHA1CommitFromRefLog> //
+
+Cherry pick commit - apply commit to branch (it will exists both places, only applies the chosen commit)
+$ git cherry-pick <SHA1>
+
