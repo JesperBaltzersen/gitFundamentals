@@ -1,6 +1,9 @@
 This document displays and explains features about Git. Most of the content is grapped from 
 James Wyndham's PluralSight course Git Fundamentals
 
+Useful Git bash alias
+alias ls='ls -alsF --color=auto --show-control-chars' // shows 'ls' with colors and all options
+
 Initialise repo as a git repo
 $ git init 
 
