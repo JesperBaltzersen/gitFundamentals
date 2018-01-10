@@ -194,3 +194,7 @@ $ git branch <branchName> <SHA1CommitFromRefLog> //
 Cherry pick commit - apply commit to branch (it will exists both places, only applies the chosen commit)
 $ git cherry-pick <SHA1>
 
+Branch info
+$ git remote -v
+
+
